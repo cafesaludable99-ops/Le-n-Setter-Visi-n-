@@ -1,1 +1,76 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEON SETTER VISIÓN</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;LEON SETTER VISIÓN&quot;,&quot;short_name&quot;:&quot;LEON SV&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#000000&quot;,&quot;theme_color&quot;:&quot;#000000&quot;}">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white p-3 max-w-md mx-auto">
+  <header class="text-center mb-4">
+    <h1 class="text-2xl font-black">JUA VOLLEYBALL CLUB</h1>
+    <h2 class="text-lg font-bold text-yellow-400">TENDENCIA DEL COLOCADOR</h2>
+    <p class="text-xs text-gray-400">By Coach Juan León</p>
+  </header>
+  <div class="grid grid-cols-2 gap-2 mb-4 text-sm">
+    <select id="rotacion" class="bg-gray-800 p-2 rounded">
+      <option value="">Rotación: Todas</option>
+      <option>R1</option><option>R2</option><option>R3</option>
+      <option>R4</option><option>R5</option><option>R6</option>
+    </select>
+    <select id="pase" class="bg-gray-800 p-2 rounded">
+      <option value="">Pase: Todos</option>
+      <option>Bueno</option><option>Medio</option><option>Malo</option>
+    </select>
+    <select id="marcador" class="bg-gray-800 p-2 rounded">
+      <option value="">Marcador: Todos</option>
+      <option value="0-8">0-8</option>
+      <option value="9-16">9-16</option>
+      <option value="17-60">17-60</option>
+    </select>
+    <input id="rival" placeholder="Rival" class="bg-gray-800 p-2 rounded">
+    <input id="colocador" placeholder="Colocador #" class="bg-gray-800 p-2 rounded">
+    <input id="fecha" type="date" class="bg-gray-800 p-2 rounded">
+  </div>
+  <button onclick="filtrar()" class="w-full bg-yellow-500 text-black font-bold p-3 rounded mb-4">CALCULAR TENDENCIA</button>
+  <div id="semaforo" class="text-center p-4 rounded-lg mb-4 bg-gray-800">
+    <div class="text-sm">ZONA MAS PROBABLE</div>
+    <div id="zona" class="text-4xl font-black my-1">--</div>
+    <div id="porcentaje" class="text-xl">--%</div>
+    <div id="recomendacion" class="text-sm mt-2 font-bold">Esperando datos...</div>
+  </div>
+  <div class="mb-4">
+    <h3 class="font-bold mb-2 text-yellow-400">BLOQUEO CARGADO AQUÍ</h3>
+    <table class="w-full text-sm bg-gray-800 rounded">
+      <thead><tr class="text-gray-400">
+        <th class="p-2 text-left">Zona</th>
+        <th class="p-2">Veces</th>
+        <th class="p-2">% Probabilidad</th>
+      </tr></thead>
+      <tbody id="tabla"></tbody>
+    </table>
+  </div>
+  <div class="text-xs text-gray-400 mb-4">
+    <div>Muestras analizadas: <span id="muestras">0</span></div>
+    <div>Jugadas de ESTE RIVAL: <span id="jr">0</span></div>
+    <div>Jugadas con ESTE COLOCADOR: <span id="jc">0</span></div>
+  </div>
+  <div class="border-t border-gray-700 pt-4">
+    <h3 class="font-bold mb-2 text-yellow-400">REGISTRAR JUGADA</h3>
+    <div class="grid grid-cols-3 gap-2">
+      <button onclick="registrar(4)" class="bg-gray-700 p-3 rounded">Zona 4</button>
+      <button onclick="registrar(3)" class="bg-gray-700 p-3 rounded">Zona 3</button>
+      <button onclick="registrar(2)" class="bg-gray-700 p-3 rounded">Zona 2</button>
+      <button onclick="registrar(1)" class="bg-gray-700 p-3 rounded">Zona 1</button>
+      <button onclick="registrar(6)" class="bg-gray-700 p-3 rounded">Zona 6</button>
+      <button onclick="registrar(5)" class="bg-gray-700 p-3 rounded">Zona 5</button>
+    </div>
+    <button onclick="archivar()" class="w-full bg-red-600 p-2 rounded mt-3 text-sm">Archivar Temporada</button>
+  </div>
+<script>
+let DB = JSON.parse(localStorage.getItem('LEON_DB') || '[]');
+let HIST = JSON.parse(localStorage.getItem('LEON_HIST') || '[]');
+function getBucket(puntos
